@@ -18,6 +18,9 @@ class Reader(AbstractUser):
     def get_username(self):
         return self.first_name + ' ' + self.last_name
 
+    def get_email(self):
+        return self.email
+
 
 class ReaderProfile(models.Model):
     user = models.OneToOneField(to=Reader, on_delete=models.CASCADE)
@@ -44,6 +47,17 @@ class Author(models.Model):
 
     class Meta:
         ordering = ['first_name', 'middle_name', 'last_name', 'gender']
+
+    def author_age(self):
+        if self.date_of_death:
+            age = self.date_of_death - self.date_of_birth
+            return age.days // 365
+        else:
+            from django.utils import timezone
+
+            today = timezone.now().today().date()
+            age = today - self.date_of_birth
+            return age.days // 365
 
     def __str__(self):
         return f"{self.first_name} {self.middle_name if self.middle_name else ''} {self.last_name}"
@@ -101,6 +115,10 @@ class LibrayRecords(models.Model):
     status = models.BooleanField(default=False)  # returned or not
     return_date = models.DateTimeField(blank=True, null=True)
     return_status = models.CharField(max_length=250, choices=return_choices, null=True)
+
+    def time_left(self):
+        from django.utils.timesince import timeuntil
+        return int(timeuntil(self.projected_date)[0])
 
     def __str__(self):
         return f"{self.borrowed_Copy.book.title}-{self.status}"

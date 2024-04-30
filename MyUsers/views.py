@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+
 from .forms import RegisterForm, LoginForm, EditForm
 from base.models import Reader, LibrayRecords, Review, BookCopy
 from base.forms import BookReviewForm
@@ -159,7 +160,8 @@ def registerUser(request):
         if form.is_valid():
             print(form.cleaned_data)
             user = form.save(commit=False)
-            user.username = form.cleaned_data['first_name'][0].upper() + form.cleaned_data['last_name']
+            user.username = form.cleaned_data['first_name'].upper() + " " + form.cleaned_data['last_name']
+            print(form.cleaned_data)
             user.email = form.cleaned_data['email']
             user.save()
             login(request, user)

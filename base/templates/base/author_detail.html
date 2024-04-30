@@ -2,13 +2,17 @@
 
 {% block content %}
     <div>
-        <p>name: {{ author.first_name }} {% if author.middle_name %}
-            {{ author.middle_name }}{% endif %}{{ author.last_name }}</p>
+        <img src="{{ author.author_image.url }}" alt="">
+        <p>{{ author.first_name|title }} {% if author.middle_name %}
+            {{ author.middle_name |title}}{% endif %} {{ author.last_name|title }}</p>
         <p>{{ author.bio }}</p>
         <p>Date of Birth: {{ author.date_of_birth }}</p>
-            {% if author.date_of_death %}
-                <p>Date of death: {{ author.date_of_death }}</p>
-
-            {% endif %}
+        {% if author.date_of_death %}
+            <p>Date of death: {{ author.date_of_death }}</p>
+            <p>Died at {{ author.author_age }} years</p>
+            {% else %}
+            <p>AGE: {{ author.author_age }} Years</p>
+        {% endif %}
+    <a href="{{ request.META.HTTP_REFERER }}">BACK</a>
     </div>
 {% endblock %}

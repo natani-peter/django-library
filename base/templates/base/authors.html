@@ -3,11 +3,13 @@
     <div>
         <ol>
             {% for author in authors %}
-                <li>
-                    <a href="{% url 'base:author' author.id %}">
-                        {{ author }}
-                    </a>
-                </li>
+               <div style="border: 1px solid #333333;margin: 1rem;padding: 0.5rem;display: inline-block;border-radius: 2rem">
+                <a href="{% url 'base:about_book' author.id %}">{{ author }}</a><br>
+                &nbsp;&nbsp;<br>
+            <a href="{% url 'base:author' author.id %}"><img src="{{ author.author_image.url }}" alt=""></a>
+
+
+            </div>
             {% empty %}
                 <p>No Authors</p>
             {% endfor %}

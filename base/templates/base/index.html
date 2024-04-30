@@ -3,34 +3,37 @@
 {% block content %}
     <form action="{% url 'base:index' %}" method="get">
         <label>
-            <input placeholder="Search for books ... " type="text" name="q">
+            <input placeholder="Search for books ... " type="text" name="q" style="width: 50%;height: 40px;border-radius: 2rem;padding: 0 30px 0 30px">
         </label>
     </form>
     <div>
-        Total Books: {{ number_of_books }} books
+        <h4>Total Books: {{ number_of_books }} books<h4>
     </div>
 
 
     <div>
         {% for available_book,number in available_copies %}
-            <ul>
-                <li>
-                    <a href="{% url 'base:about_book' available_book.id %}">{{ available_book.title }}</a>
-                    by
-                    {% for author in available_book.author.all %}
-                        {{ author }}
-                    {% endfor %}
-                    &nbsp;&nbsp;{{ number }}
 
-                    {% if number == 1 %}
-                        available copy
-                    {% else %}
-                        available copies
-                    {% endif %}
+            <div style="border: 1px solid #333333;margin: 1rem;padding: 2rem;display: inline-block;border-radius: 2rem">
+                <a href="{% url 'base:about_book' available_book.id %}">{{ available_book.title }}</a><br>
+                BY<br>
+                {% for author in available_book.author.all %}
+                    {{ author }}
+                {% endfor %}
+                &nbsp;&nbsp;<br>
+            <a href="{% url 'base:about_book' available_book.id %}"><img src="{{ available_book.book_image.url }}" alt=""></a>
+
+            <br>
+            {{ number }}
+                {% if number == 1 %}
+                    available copy
+                {% else %}
+                    available copies
+                {% endif %}
 
 
-                </li>
-            </ul>
+            </div>
+
 
         {% empty %}
             <p>No Available Books</p>

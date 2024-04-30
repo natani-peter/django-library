@@ -3,22 +3,40 @@
 {% block content %}
     <div>
         {% for record in records %}
-            <div style="padding: 1rem;margin: 0.5rem;border: 5px solid #1e341e">
-                <p>TITLE : {{ record.borrowed_Copy.book.title }}</p>
-                <p>AUTHOR: {% for author in record.borrowed_Copy.book.author.all %}
-                    {{ author }}
-                {% endfor %}
-                </p>
-                <p>ISBN: {{ record.borrowed_Copy.book.ISBN }}</p>
-                <p>TIME LEFT: {{ record.projected_date| timeuntil }}</p>
-                {% if request.user.is_staff %}
-                    <p>BORROWED BY: <a href="{% url 'users:userProfile' record.borrower.id %}">{{ record.borrower }}</a>
+
+            <div style="padding: 1rem;margin: 0.5rem;border: 5px solid #1e341e;display:inherit">
+                <div style="display: inline-block;margin-right: 1rem">
+                    <a href="{% url 'base:about_book' record.borrowed_Copy.book.id%}">
+                    <img src="{{ record.borrowed_Copy.book.book_image.url }}" alt=""></a>
+                </div>
+                <div style="display: inline-block">
+                    <p>TITLE : {{ record.borrowed_Copy.book.title }}</p>
+                    <p>AUTHOR: {% for author in record.borrowed_Copy.book.author.all %}
+                        {{ author }}
+                    {% endfor %}
                     </p>
-                    <a href="{% url 'base:collect_status' record.id %}">RETURN BOOK</a>
-                {% endif %}
+                    <p>ISBN: {{ record.borrowed_Copy.book.ISBN }}</p>
+                    {% if record.time_left == 0 %}
+                        <p>This book should be returned By now,<br> Contact the borrower</p>
+                    {% else %}
+                        <p>TIME LEFT: {{ record.projected_date| timeuntil }}</p>
+                    {% endif %}
+
+                    {% if request.user.is_staff %}
+                        {% if record.borrower.id %}
+                            <p>BORROWED BY: <a
+                                    href="{% url 'users:userProfile' record.borrower.id %}">{{ record.borrower }}</a>
+                            </p>
+                        {% else %}
+                            <p>The User was deleted </p>
+                        {% endif %}
+                        <a href="{% url 'base:collect_status' record.id %}">RETURN BOOK</a>
+
+                    {% endif %}
+                </div>
             </div>
         {% empty %}
-            <p>You have no borrowed books !</p>
+            <p>No borrowed books !</p>
         {% endfor %}
 
     </div>

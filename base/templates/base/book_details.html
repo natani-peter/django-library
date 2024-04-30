@@ -1,41 +1,41 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-    {#	we need an image#}
-    <a href="{% url 'base:book_review' book.id %}">REVIEW THIS BOOK</a>
-    <a href="{% url 'base:borrow_book' book.id %}">BORROW THIS BOOK</a>
+  <p>
+    <a href="{% url 'base:book_review' book.id %}">REVIEW THIS BOOK</a>&nbsp;&nbsp;
+    <a href="{% url 'base:borrow_book' book.id %}">BORROW THIS BOOK</a>&nbsp;&nbsp;<a href="{{ request.META.HTTP_REFERER }}"> BACK </a></p>
     {% if book_rating %}
-        <p>RATING: {{ book_rating }}</p>
+        <h3>BOOK RATING: {{ book_rating }} STARS</h3>
     {% endif %}
+    <div style="border: 1px solid #333333;margin: 1rem;padding: 0.5rem;display: inline-block">
+        <a href="{% url 'base:about_book' book.id %}">{{ book.title }}</a><br>
+        BY<br>
+        {% for author in book.author.all %}
+            {{ author }}
+        {% endfor %}
+        &nbsp;&nbsp;<br>
+        <a href="{% url 'base:about_book' book.id %}"><img src="{{ book.book_image.url }}"
+                                                                     alt=""></a>
 
-    <ul>
-        <li>
-            {{ book.title }}
-
-        </li>
-        <li>
-            {% for author in book.author.all %}
-                {{ author }}
-            {% endfor %}
-        </li>
-        <li>
-            {% if book.summary %}
-                {{ book.summary }}
-            {% endif %}
-        </li>
-    </ul>
-    <ul>
-        {% if  reviews %}
-            <ul>
-                {% for review in reviews %}
-                    <li>
-                        {{ review.description }}
-                    </li>
-
-                {% endfor %}
-
-            </ul>
-
+        <br>
+        {% if book.summary %}
+            {{ book.summary }}
         {% endif %}
-    </ul>
+    </div>
+    {% if  reviews %}
+
+        {% for review in reviews %}
+            <div style="border: 1px solid #333333;margin: 1rem;padding: 0.5rem;display: block">
+                <p>Reviewed By: <a href="{% url 'users:userProfile' review.owner.id %}">{{ review.owner }}</a></p>
+                {{ review.date|timesince }} ago
+                <p><b>RATED: {{ review.rating }} stars</b></p>
+                {{ review.description|capfirst }} .
+
+            </div>
+
+        {% endfor %}
+
+
+
+    {% endif %}
 {% endblock %}
