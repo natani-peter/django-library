@@ -5,17 +5,23 @@
     <div>
         <p>TOTAL COPIES UNDER MAINTENANCE: {{ number }} copies</p>
         {% for book in books %}
-            <div style="padding: 1rem;margin: 0.5rem;border: 5px solid #1e341e">
-            <img src="{{ book.book.book_image.url }}" alt="Book Cover">
-                <p>TITLE : {{ book.book.title }}</p>
-                <p>AUTHOR: {% for author in book.book.author.all %}
-                    {{ author }}
-                {% endfor %}
-                </p>
-                <p>ISBN: {{ book.book.ISBN }}</p>
-                {% if request.user.is_staff %}
-                    <a href="{% url 'users:editBookCopy' book.id %}">MAKE AVAILABLE</a>
-                {% endif %}
+            <div style="margin: 0.5rem;border: 5px solid #1e341e">
+                <div style="display: inline-block;padding-right: 1rem">
+                    <img src="{{ book.book.book_image.url }}" alt="Book Cover"
+                    >
+                </div>
+
+                <div style="display: inline-block;padding-bottom: 1rem">
+                    <p>TITLE : {{ book.book.title }}</p>
+                    <p>AUTHOR: {% for author in book.book.author.all %}
+                        {{ author }}
+                    {% endfor %}
+                    </p>
+                    <p>ISBN: {{ book.book.ISBN }}</p>
+                    {% if request.user.is_staff %}
+                        <a href="{% url 'users:editBookCopy' book.id %}">MAKE AVAILABLE</a>
+                    {% endif %}
+                </div>
             </div>
         {% empty %}
             <p>No books Under Maintenance</p>

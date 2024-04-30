@@ -1,21 +1,29 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-    <div>
-        <p>Joined: {{ user.date_joined|timesince }} ago</p>
-        <p>USER NAME: {{ user.get_username }}</p>
-        <p>USER GENDER: {{ user.gender }}</p>
-        {% if user.bio %}
-            <p>BIOGRAPHY</p>
-            <p>{{ user.bio }}</p>
-        {% endif %}
-        {% if request.user.is_staff %}
-            <p>EMAIL: {{ user.email }}</p>
-            <p>DATE OF BIRTH: {{ user.date_of_birth }}</p>
-            <a href="{{ request.META.HTTP_REFERER }}">BACK</a>&nbsp;&nbsp;&nbsp;&nbsp;
+
+    <div style="border: 1px solid #333333;margin: 20%;padding: 0.5rem;display: inline-block;border-radius: 2rem">
+
+        <div style="display: inline-block;padding-right: 3rem">
+            <img src="{{ user.reader_image.url }}" alt="">
+        </div>
+        <div style="display: inline-block;padding-bottom: 1rem;">
+            <p>Joined: {{ user.date_joined|timesince }} ago</p>
+            <p>USER NAME: {{ user.get_username }}</p>
+            <p>USER GENDER: {{ user.gender }}</p>
+            {% if user.bio %}
+                <p>BIOGRAPHY</p>
+                <p>{{ user.bio }}</p>
+            {% endif %}
+            {% if request.user.is_staff %}
+                <p>EMAIL: {{ user.get_email }}</p>
+                <p>DATE OF BIRTH: {{ user.date_of_birth }}</p>
+                <a href="{{ request.META.HTTP_REFERER }}">BACK</a>&nbsp;&nbsp;&nbsp;&nbsp;
             {% else %}
-            <p><a href="{% url 'users:editProfile' user.id %}"> EDIT</a></p>
-        {% endif %}
+                <p><a href="{% url 'users:editProfile' user.id %}"> EDIT</a></p>
+            {% endif %}
+        </div>
+
 
     </div>
 {% endblock %}
