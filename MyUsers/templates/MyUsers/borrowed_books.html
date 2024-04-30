@@ -1,0 +1,25 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div>
+        {% for record in records %}
+            <div style="padding: 1rem;margin: 0.5rem;border: 5px solid #1e341e">
+                <p>TITLE : {{ record.borrowed_Copy.book.title }}</p>
+                <p>AUTHOR: {% for author in record.borrowed_Copy.book.author.all %}
+                    {{ author }}
+                {% endfor %}
+                </p>
+                <p>ISBN: {{ record.borrowed_Copy.book.ISBN }}</p>
+                <p>TIME LEFT: {{ record.projected_date| timeuntil }}</p>
+                {% if request.user.is_staff %}
+                    <p>BORROWED BY: <a href="{% url 'users:userProfile' record.borrower.id %}">{{ record.borrower }}</a>
+                    </p>
+                    <a href="{% url 'base:collect_status' record.id %}">RETURN BOOK</a>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>You have no borrowed books !</p>
+        {% endfor %}
+
+    </div>
+{% endblock %}

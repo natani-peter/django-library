@@ -1,0 +1,25 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+    <div>
+        <p>TOTAL COPIES UNDER MAINTENANCE: {{ number }} copies</p>
+        {% for book in books %}
+            <div style="padding: 1rem;margin: 0.5rem;border: 5px solid #1e341e">
+            <img src="{{ book.book.book_image.url }}" alt="Book Cover">
+                <p>TITLE : {{ book.book.title }}</p>
+                <p>AUTHOR: {% for author in book.book.author.all %}
+                    {{ author }}
+                {% endfor %}
+                </p>
+                <p>ISBN: {{ book.book.ISBN }}</p>
+                {% if request.user.is_staff %}
+                    <a href="{% url 'users:editBookCopy' book.id %}">MAKE AVAILABLE</a>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>No books Under Maintenance</p>
+        {% endfor %}
+
+    </div>
+{% endblock %}

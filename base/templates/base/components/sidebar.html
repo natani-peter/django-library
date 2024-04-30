@@ -1,0 +1,52 @@
+<div class="sidebar">
+    <h2> SOFT LIBRARY </h2>
+    {% if request.user.is_staff %}
+        <div style="margin-top: 80%;margin-bottom: 20%">
+            <ul style="list-style-type: none;margin: 0;padding: 0">
+                <li style="margin-top: 3rem">
+                    <a href="{% url 'base:index' %}">AVAILABLE BOOKS</a>
+                </li>
+                <li style="margin-top:3rem">
+                    <a href="{% url 'users:borrowed' %}">BORROWED BOOKS</a>
+                </li>
+                <li style="margin-top:3rem">
+                    <a href="{% url 'users:MaintenanceBooks' %}"> CHANGE BOOK STATUS</a>
+                </li>
+                <li style="margin-top:3rem">
+                    <a href="{% url 'users:overdueBooks' %}"> OVERDUE BOOKS</a>
+                </li>
+            </ul>
+
+        </div>
+    {% else %}
+        <div style="margin-top: 80%;margin-bottom: 20%">
+            <ul style="list-style-type: none;margin: 0;padding: 0">
+                <li style="margin-top: 3rem">
+                    <a href="{% url 'base:index' %}">AVAILABLE BOOKS</a>
+                </li>
+                <li style="margin-top: 3rem">
+                    <a href="{% url 'users:borrowed' %}">MY BORROWED BOOKS</a>
+                </li>
+                <li style="margin-top: 3rem">
+                    <a href="{% url 'users:returned' %}"> RETURNED BOOKS</a>
+                </li>
+                <li style="margin-top: 3rem">
+                    <a href="{% url 'users:userReviews' %}"> MY REVIEWS</a>
+                </li>
+            </ul>
+
+        </div>
+    {% endif %}
+
+    <div style="position:fixed;bottom:10px;">
+        {% if request.user.is_authenticated %}
+            <form method="post" action="">
+                {% csrf_token %}
+                <a href="{% url 'users:logout' %} ">LOG OUT</a>
+
+            </form>
+        {% else %}
+            <a href="{% url 'users:login' %}">LOG IN</a>
+        {% endif %}
+    </div>
+</div>

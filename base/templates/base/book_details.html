@@ -1,0 +1,41 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    {#	we need an image#}
+    <a href="{% url 'base:book_review' book.id %}">REVIEW THIS BOOK</a>
+    <a href="{% url 'base:borrow_book' book.id %}">BORROW THIS BOOK</a>
+    {% if book_rating %}
+        <p>RATING: {{ book_rating }}</p>
+    {% endif %}
+
+    <ul>
+        <li>
+            {{ book.title }}
+
+        </li>
+        <li>
+            {% for author in book.author.all %}
+                {{ author }}
+            {% endfor %}
+        </li>
+        <li>
+            {% if book.summary %}
+                {{ book.summary }}
+            {% endif %}
+        </li>
+    </ul>
+    <ul>
+        {% if  reviews %}
+            <ul>
+                {% for review in reviews %}
+                    <li>
+                        {{ review.description }}
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+        {% endif %}
+    </ul>
+{% endblock %}

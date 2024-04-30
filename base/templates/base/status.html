@@ -1,0 +1,9 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <form action="{% url 'base:return_book' record_id %}" method="post">
+    {% csrf_token %}
+        {{ form.as_p }}
+    <a href="{{ request.META.HTTP_REFERER }}">BACK</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" style="color: white;background: darkgreen">CONFIRM</button>
+    </form>
+{% endblock %}

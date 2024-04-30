@@ -1,0 +1,14 @@
+<div class="navbar">
+    <a href="{% url 'base:authors' %}"> AUTHORS</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="{% url 'base:index' %}"> BOOKS </a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    {% if request.user.is_authenticated %}
+        <a>Welcome <a href="{% url 'users:userProfile' request.user.id %}">{{ request.user.last_name | title }}</a></a>
+
+    {% else %}
+        <a href="{% url 'users:login' %}">LOG IN</a>&nbsp;
+        || &nbsp;<a href="{% url 'users:register' %} ">REGISTER</a>
+    {% endif %}
+
+</div>

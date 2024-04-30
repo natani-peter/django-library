@@ -1,0 +1,40 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+    <form action="{% url 'base:index' %}" method="get">
+        <label>
+            <input placeholder="Search for books ... " type="text" name="q">
+        </label>
+    </form>
+    <div>
+        Total Books: {{ number_of_books }} books
+    </div>
+
+
+    <div>
+        {% for available_book,number in available_copies %}
+            <ul>
+                <li>
+                    <a href="{% url 'base:about_book' available_book.id %}">{{ available_book.title }}</a>
+                    by
+                    {% for author in available_book.author.all %}
+                        {{ author }}
+                    {% endfor %}
+                    &nbsp;&nbsp;{{ number }}
+
+                    {% if number == 1 %}
+                        available copy
+                    {% else %}
+                        available copies
+                    {% endif %}
+
+
+                </li>
+            </ul>
+
+        {% empty %}
+            <p>No Available Books</p>
+        {% endfor %}
+
+    </div>
+{% endblock %}

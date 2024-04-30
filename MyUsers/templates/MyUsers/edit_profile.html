@@ -1,0 +1,12 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <p>{{ user }}'s Profile</p>
+    <hr>
+    <form method="post" action="{% url 'users:editProfile' user.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p><a href="{{ request.META.HTTP_REFERER }}">BACK</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type="submit">EDIT</button>
+        </p>
+    </form>
+{% endblock %}

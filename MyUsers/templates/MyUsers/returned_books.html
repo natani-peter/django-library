@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div>
+        {% for record in records %}
+            <div style="padding: 1rem;margin: 0.5rem;border: 5px solid #1e341e">
+                <p>TITLE : {{ record.borrowed_Copy.book.title }}</p>
+                <p>AUTHOR: {% for author in record.borrowed_Copy.book.author.all %}
+                    {{ author }}
+                {% endfor %}
+                </p>
+                <p>ISBN: {{ record.borrowed_Copy.book.ISBN }}</p>
+                <p>RETURN DATE: {{ record.return_date.date }}</p>
+            </div>
+
+        {% empty %}
+            <p>You have not returned any book !</p>
+        {% endfor %}
+
+    </div>
+{% endblock %}

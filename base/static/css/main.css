@@ -1,0 +1,47 @@
+/* Navigation Bar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    background-color: #111;
+    color: #fff;
+    padding: 20px;
+    height: 100vh;
+}
+
+/* Main Page Area */
+.main-page {
+    margin-left: 200px; /* same width as sidebar */
+    padding: 50px;
+    text-align: center;
+}
+
+/* Style for navbar links */
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Style for sidebar links */
+.sidebar a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Style for main page content */
+.main-page p {
+    font-size: 18px;
+}

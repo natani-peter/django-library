@@ -1,0 +1,19 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div>
+        {% for review in my_Reviews %}
+            <div style="padding: 1rem;margin: 0.5rem;border: 5px solid #1e341e">
+                <p>{{ review.date|timesince }} ago</p>
+                <p>Book : <a href="{% url 'base:about_book' review.book.id %}">{{ review.book.title }}</a></p>
+                <p>RATE: {{ review.rating }}</p>
+                <p>{{ review.description|capfirst }}</p>
+            <p><a href="{% url 'users:review_edit' review.id %}"> EDIT REVIEW </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'users:confirm_delete' review.id %}"> DELETE REVIEW </a></p>
+            </div>
+
+        {% empty %}
+            <p>You have not reviewed any book !</p>
+        {% endfor %}
+
+    </div>
+{% endblock %}
