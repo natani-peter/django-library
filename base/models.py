@@ -93,6 +93,20 @@ class Review(models.Model):
         return f"{self.description[:30]}..." if len(self.description) > 30 else f"{self.description}"
 
 
+class ReviewReply(models.Model):
+    owner = models.ForeignKey(Reader, on_delete=models.CASCADE, related_name='replies')
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='replies')
+    description = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+
+
+class ReplyReply(models.Model):
+    owner = models.ForeignKey(Reader, on_delete=models.CASCADE, related_name='reply_replies')
+    reply = models.ForeignKey(ReviewReply, on_delete=models.CASCADE, related_name='reply_replies')
+    description = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+
+
 status_choice = [('M', 'Maintenance'), ('B', 'Borrowed'), ('A', 'Available'), ]
 return_choices = [('G', 'Good'), ('B', 'Bad')]
 

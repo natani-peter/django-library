@@ -12,7 +12,8 @@ urlpatterns = [
     path('my-returned-books/', views.returned_book, name='returned'),
     path('my-reviews/', views.userReviews, name='userReviews'),
     path('edit-review/<int:pk>/', views.edit_review, name='review_edit'),
-
+    path('reply/<int:pk>/<int:book_id>/', views.replyReview, name='replyReview'),
+    path('reply-to-reply/<int:pk>/<int:book_id>/', views.replyReply, name='reply_reply'),
     path('user/<int:pk>/', views.userProfile, name='userProfile'),
     path('confirm-delete-review/<int:pk>/', views.confirm_delete, name='confirm_delete'),
     path('delete-review/<int:pk>/', views.delete_review, name='review_delete'),

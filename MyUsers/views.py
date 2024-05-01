@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from .forms import RegisterForm, LoginForm, EditForm
-from base.models import Reader, LibrayRecords, Review, BookCopy
+from base.models import Reader, LibrayRecords, Review, BookCopy, ReviewReply, ReplyReply
 from base.forms import BookReviewForm
 
 
@@ -124,6 +124,46 @@ def overDueBooks(request):
         overdue = [record for record in books if record.projected_date < timezone.now()]
         context = {'records': overdue}
         return render(request, 'MyUsers/due_books.html', context)
+
+
+@login_required(login_url='users:login')
+def replyReview(request, pk: int, book_id: int):
+    review = Review.objects.get(id=pk)
+    if request.method == 'POST':
+        reply = request.POST.get('reply')
+        if len(reply) < 3:
+            messages.error(request, 'Please enter a more detailed reply')
+            return redirect('users:replyReview', pk)
+        else:
+            reply = ReviewReply.objects.create(
+                owner=request.user,
+                review=review,
+                description=reply
+            )
+            reply.save()
+            return redirect('base:about_book', book_id)
+    context = {'review': review}
+    return render(request, 'MyUsers/review_reply.html', context)
+
+
+@login_required(login_url='users:login')
+def replyReply(request, pk: int, book_id: int):
+    the_reply = ReviewReply.objects.get(id=pk)
+    if request.method == 'POST':
+        reply = request.POST.get('reply')
+        if len(reply) < 3:
+            messages.error(request, 'Please enter a more detailed reply')
+            return redirect('users:replyReview', pk)
+        else:
+            reply = ReplyReply.objects.create(
+                owner=request.user,
+                reply=the_reply,
+                description=reply
+            )
+            reply.save()
+            return redirect('base:about_book', book_id)
+    context = {'review': the_reply}
+    return render(request, 'MyUsers/review_reply.html', context)
 
 
 def logUser(request):
