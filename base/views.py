@@ -7,7 +7,7 @@ import datetime
 
 # Create your views here.
 def two_weeks(created: datetime):
-    projected_two_weeks = created + datetime.timedelta(minutes=5)
+    projected_two_weeks = created + datetime.timedelta(weeks=2)
     return projected_two_weeks
 
 
