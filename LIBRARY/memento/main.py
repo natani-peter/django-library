@@ -41,20 +41,46 @@ class History:
             pass
 
 
+class Tool:
+    def __init__(self, name: str):
+        self.name = name
+
+    def draw(self, action):
+        pass
+
+
+class SelectTool(Tool):
+    def __init__(self):
+        super().__init__("Select Tool")
+
+    def draw(self, action):
+        if action == 'down':
+            print('A + sign')
+
+        if action == 'up':
+            print('the highlighted text is selected')
+
+
+class BrushTool(Tool):
+    def __init__(self):
+        super().__init__("Brush Tool")
+
+    def draw(self, action):
+        if action == 'down':
+            print('a little circle sign')
+        if action == 'up':
+            print('the brush shades a little color')
+
+
+class User:
+    @staticmethod
+    def use(a_tool: Tool):
+        return a_tool
+
+
 # usage
 
 if __name__ == "__main__":
-    editor = Editor()
-    history = History()
-    editor.setContent("Hello World Kampala")
-    history.pushState(editor.createState())
-    editor.setContent("Hello World From Uganda")
-    history.pushState(editor.createState())
-    editor.setContent("Hello World From East Africa")
-    history.pushState(editor.createState())
-    editor.setContent("Hello World From Africa")
-    print(editor.content)
-    print(editor.restoreState(history.popState()))
-    print(editor.restoreState(history.popState()))
-    print(editor.restoreState(history.popState()))
-    print(editor.restoreState(history.popState()))
+    myUser = User()
+    select_tool = myUser.use(SelectTool())
+    select_tool.draw('down')

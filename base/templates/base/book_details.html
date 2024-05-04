@@ -1,13 +1,13 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-  <p>
-    <a href="{% url 'base:book_review' book.id %}">REVIEW THIS BOOK</a>&nbsp;&nbsp;
-    <a href="{% url 'base:borrow_book' book.id %}">BORROW THIS BOOK</a>&nbsp;&nbsp;<a href="{{ request.META.HTTP_REFERER }}"> BACK </a></p>
+    <p>
+        <a href="{% url 'base:borrow_book' book.id %}">BORROW THIS BOOK</a>&nbsp;&nbsp;<a
+            href="{{ request.META.HTTP_REFERER }}"> BACK </a></p>
     {% if book_rating %}
         <h3>BOOK RATING: {{ book_rating }} STARS</h3>
     {% endif %}
-    <div style="border: 1px solid #333333;margin: 1rem;padding: 0.5rem;display: inline-block">
+    <div style="border: 1px solid #333333;margin: 1rem;padding: 2rem;display: inline-block;border-radius: 2rem">
         <a href="{% url 'base:about_book' book.id %}">{{ book.title }}</a><br>
         BY<br>
         {% for author in book.author.all %}
@@ -15,23 +15,67 @@
         {% endfor %}
         &nbsp;&nbsp;<br>
         <a href="{% url 'base:about_book' book.id %}"><img src="{{ book.book_image.url }}"
-                                                                     alt=""></a>
+                                                           alt=""></a>
 
-        <br>
-        {% if book.summary %}
-            {{ book.summary }}
-        {% endif %}
+
     </div>
+    <p>
+        <a href="{% url 'base:book_review' book.id %}">REVIEW THIS BOOK</a></p>
+    <br>
+
+    {% if book.summary %}
+        <h5>BOOK SUMMARY</h5>
+        {{ book.summary }}
+    {% endif %}
     {% if  reviews %}
 
         {% for review in reviews %}
             <div style="border: 1px solid #333333;margin: 1rem;padding: 0.5rem;display: block">
                 <p>Reviewed By: <a href="{% url 'users:userProfile' review.owner.id %}">{{ review.owner }}</a></p>
                 {{ review.date|timesince }} ago
-                <p><b>RATED: {{ review.rating }} stars</b></p>
+                <p><b>RATED BOOK: {{ review.rating }} stars</b></p>
                 {{ review.description|capfirst }} .
+            <p></p>
+                {% if request.user.id == review.owner.id %}
+                    <a href="{% url 'users:review_edit' review.id %}">EDIT</a>
+                {% endif %}
+                &nbsp;&nbsp;&nbsp;<a href="{% url 'users:replyReview' review.id book.id %}"> REPLY</a>
+                <div>
+                    {% if review.replies.all %}
+                        <div style="border: 3px solid green;padding: 3px;">
+                        {% for reply in review.replies.all %}
+                            <hr>
+                            {{ reply.date|timesince }} ago
+                            <p>@{{ reply.owner.first_name }} replied to @{{ reply.review.owner.first_name }}</p>
+                            {{ reply.description }}<br>
+                            <p></p>
+                            {% if request.user.id == reply.owner.id %}
+                                <a href="#">EDIT</a>
+                            {% endif %}
+                            &nbsp;&nbsp;&nbsp;<a href="{% url 'users:reply_reply' reply.id book.id %}"> REPLY</a>
+                            {% if reply.reply_replies.all %}
+                            <div style="border: 2px solid dodgerblue;padding: 5px">
+                            {% for another_reply in reply.reply_replies.all %}
+                                <hr>
+                                {{ another_reply.date | timesince }} ago
+                                <p>@{{ another_reply.owner.first_name }} replied to @{{ reply.owner.first_name }}</p>
+                                {{ another_reply.description }}
+                                <p></p>
+                                {% if request.user.id == another_reply.owner.id %}
+                                <a href="#">EDIT</a>
+                            {% endif %}
+                            &nbsp;&nbsp;&nbsp;<a href="{% url 'users:reply_reply' reply.id book.id %}"> REPLY</a>
+                            {% endfor %}
 
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                        </div>
+
+                    {% endif %}
+                </div>
             </div>
+
 
         {% endfor %}
 

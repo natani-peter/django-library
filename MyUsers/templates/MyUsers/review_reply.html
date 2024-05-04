@@ -1,0 +1,18 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <div style="margin: 5rem">
+        <h3 style="padding: 0.5rem">What are your thoughts on {{ review.owner.first_name|capfirst }}'s review ?</h3>
+        <form action="" method="post">
+            {% csrf_token %}
+            <label for="reply" id="reply-label"></label>
+            <textarea id="reply" name="reply" cols="50" rows="10" placeholder="Please enter your reply"></textarea>
+
+            <div style="padding: 0.5rem">
+                <button type="submit" style="margin-right: 30px;display: inline">SUBMIT</button>
+                <a href="{{ request.META.HTTP_REFERER }}"> BACK </a>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
